@@ -172,12 +172,12 @@ curl http://localhost:3000/api/week-plans
 
 ## REST API Reference
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `POST` | `/api/plan-next-week` | Generate a new week plan from Strava data |
-| `GET` | `/api/week-plans/latest` | Retrieve the most recent saved plan |
-| `GET` | `/api/week-plans` | List all saved plans |
-| `GET` | `/api/week-plans/:id` | Get a specific plan by ID |
+| Method | Endpoint                 | Description                               |
+| ------ | ------------------------ | ----------------------------------------- |
+| `POST` | `/api/plan-next-week`    | Generate a new week plan from Strava data |
+| `GET`  | `/api/week-plans/latest` | Retrieve the most recent saved plan       |
+| `GET`  | `/api/week-plans`        | List all saved plans                      |
+| `GET`  | `/api/week-plans/:id`    | Get a specific plan by ID                 |
 
 ### `POST /api/plan-next-week` body
 
@@ -196,15 +196,16 @@ Both fields are optional. `numberOfRuns` defaults to `5`; `weekStartDate` defaul
 
 Each generated plan covers **Monday through Friday** with 3 structured blocks per session:
 
-| Day | Session | Intensity |
-|-----|---------|-----------|
-| Monday | Recovery Run | Easy |
-| Tuesday | Interval Training | High |
-| Wednesday | Tempo Run | Moderate |
-| Thursday | Easy Aerobic Run | Easy |
-| Friday | Long Run | Moderate |
+| Day       | Session           | Intensity |
+| --------- | ----------------- | --------- |
+| Monday    | Recovery Run      | Easy      |
+| Tuesday   | Interval Training | High      |
+| Wednesday | Tempo Run         | Moderate  |
+| Thursday  | Easy Aerobic Run  | Easy      |
+| Friday    | Long Run          | Moderate  |
 
 Each workout includes:
+
 - **Warmup** — 10 min easy jog
 - **Main workout** — tailored to session type
 - **Cooldown** — 5 min easy jog
@@ -246,86 +247,38 @@ Restart Cursor after changing the MCP config.
 ## Troubleshooting
 
 **Frontend shows "Nenhum plano encontrado"**
+
 - Make sure `strava-mcp` is running on port 3000
 - Verify the `VITE_API_URL` in `athly-test/.env.local` points to the correct address
 - Check that your Strava account is connected and has recent run activities
 
 **`plan-next-week` returns "No recent runs found"**
+
 - You need at least one run logged on Strava with the connected account
 
 **MongoDB connection error**
+
 - If using Docker Compose, make sure the `mongo` service is healthy before the MCP server starts (the `depends_on` healthcheck handles this automatically)
 - If running locally, verify `MONGODB_URI` in `.env` points to a running MongoDB instance
 
 **Strava token expired / "Authentication failed"**
+
 - Tokens refresh automatically. If it fails, reconnect: open `http://localhost:8111/setup` or say "Connect my Strava account" in Cursor
 
 **MCP tools not visible in Cursor**
+
 - Validate your `mcp.json` is valid JSON (no trailing commas)
 - Restart Cursor after any config changes
 - Run `npx @r-huijts/strava-mcp-server` in the terminal to confirm the server starts without errors
 
 ---
 
-## Criar repositório Git público
-
-Siga estes passos para publicar o projeto no GitHub (ou em outro host).
-
-### 1. Inicializar o Git (na raiz do projeto)
-
-```bash
-cd /caminho/para/athly-test-repo
-git init
-```
-
-### 2. Adicionar os arquivos e fazer o primeiro commit
-
-```bash
-git add .
-git status   # confira: não deve aparecer .env, node_modules, dist
-git commit -m "Initial commit: Athly — Strava MCP + frontend integration"
-```
-
-### 3. Criar o repositório no GitHub
-
-1. Acesse [github.com/new](https://github.com/new).
-2. **Repository name:** por exemplo `athly` ou `athly-strava-mcp`.
-3. **Description:** opcional, ex: "Running training platform with Strava MCP + React dashboard".
-4. Escolha **Public**.
-5. **Não** marque "Add a README" (você já tem um na pasta).
-6. Clique em **Create repository**.
-
-### 4. Conectar o repositório local e enviar o código
-
-No GitHub, a página do repositório novo mostra algo como:
-
-```bash
-git remote add origin https://github.com/SEU_USUARIO/athly.git
-git branch -M main
-git push -u origin main
-```
-
-Use a URL do **seu** repositório (HTTPS ou SSH). Exemplo com SSH:
-
-```bash
-git remote add origin git@github.com:SEU_USUARIO/athly.git
-git branch -M main
-git push -u origin main
-```
-
-### 5. Conferir
-
-- Verifique que **nenhum** arquivo `.env` ou `node_modules` foi enviado (o `.gitignore` na raiz evita isso).
-- Credenciais do Strava devem ficar apenas em `.env` (local) ou em variáveis de ambiente do servidor; nunca no repositório.
-
----
-
 ## Tech Stack
 
-| Layer | Technology |
-|-------|-----------|
+| Layer             | Technology                                                |
+| ----------------- | --------------------------------------------------------- |
 | MCP / REST server | Node.js, TypeScript, Express, `@modelcontextprotocol/sdk` |
-| Database | MongoDB |
-| Containerization | Docker Compose |
-| Frontend | React 19, Vite, Tailwind CSS 4, Zustand, React Router |
-| AI integration | Cursor MCP, `plan-next-week` tool |
+| Database          | MongoDB                                                   |
+| Containerization  | Docker Compose                                            |
+| Frontend          | React 19, Vite, Tailwind CSS 4, Zustand, React Router     |
+| AI integration    | Cursor MCP, `plan-next-week` tool                         |
